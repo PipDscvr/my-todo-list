@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from 'axios';
 import type {
   TodoParams,
   AddTodoParams,
@@ -6,7 +6,7 @@ import type {
   RandomTodoParams,
   AllTodosByUserIdParams,
   DeleteTodoParams,
-} from "./types";
+} from './types';
 export {
   TodoParams,
   AddTodoParams,
@@ -16,15 +16,15 @@ export {
   DeleteTodoParams,
 };
 
-const BASE_URL = "https://dummyjson.com";
+const BASE_URL = 'https://dummyjson.com';
 
 // Queries
 export const getAllTodos = (params?: TodoParams) => {
   return axios
     .get(
       `${BASE_URL}/todos${
-        params ? `?limit=${params.limit}&skip=${params.skip}` : ""
-      }`
+        params ? `?limit=${params.limit}&skip=${params.skip}` : ''
+      }`,
     )
     .then((res) => res);
 };
@@ -35,7 +35,7 @@ export const getTodo = (id: number) => {
 
 export const getRandomTodo = (params?: RandomTodoParams) => {
   return axios
-    .get(`${BASE_URL}/todos/random${params ? `?length=${params.length}` : ""}`)
+    .get(`${BASE_URL}/todos/random${params ? `?length=${params.length}` : ''}`)
     .then((res) => res);
 };
 
@@ -52,7 +52,9 @@ export const addTodo = (params: AddTodoParams) => {
 
 export const updateTodo = (params: UpdateTodoParams) => {
   return axios
-    .put(`${BASE_URL}/todos/${params.userId}`, { completed: params.completed })
+    .put(`${BASE_URL}/todos/${params.userId}`, {
+      completed: params.completed,
+    })
     .then((res) => res);
 };
 

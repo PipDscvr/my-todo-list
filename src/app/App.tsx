@@ -1,6 +1,6 @@
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { QueryClientProvider } from "@tanstack/react-query";
-import { queryClient } from "../shared/api";
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { QueryClientProvider } from '@tanstack/react-query';
+import { queryClient } from '../shared/api';
 
 const App = () => {
   return (

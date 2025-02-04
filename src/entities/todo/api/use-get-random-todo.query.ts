@@ -6,5 +6,5 @@ export const useGetRandomTodoQuery = (params?: RandomTodoParams) => {
   return useQuery({
     queryKey: [todoKey, 'random'],
     queryFn: () => getRandomTodo(params),
-  })
+  });
 };

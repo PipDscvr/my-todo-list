@@ -6,5 +6,5 @@ export const useGetAllTodosQuery = (params: TodoParams) => {
   return useQuery({
     queryKey: [todosKey],
     queryFn: () => getAllTodos(params),
-  })
+  });
 };
