@@ -1,3 +1,17 @@
+export type TodoDto = {
+  id: number;
+  todo: string;
+  completed: boolean;
+  userId: number;
+};
+
+export type TodosDto = {
+  todos: TodoDto[];
+  total: number;
+  skip: number;
+  limit: number;
+};
+
 export type TodoParams = {
   limit: number;
   skip: number;

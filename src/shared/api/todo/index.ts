@@ -6,8 +6,12 @@ import type {
   RandomTodoParams,
   AllTodosByUserIdParams,
   DeleteTodoParams,
+  TodosDto,
+  TodoDto,
 } from './types';
 export {
+  TodosDto,
+  TodoDto,
   TodoParams,
   AddTodoParams,
   UpdateTodoParams,
@@ -21,12 +25,12 @@ const BASE_URL = 'https://dummyjson.com';
 // Queries
 export const getAllTodos = (params?: TodoParams) => {
   return axios
-    .get(
+    .get<TodosDto>(
       `${BASE_URL}/todos${
         params ? `?limit=${params.limit}&skip=${params.skip}` : ''
       }`,
     )
-    .then((res) => res);
+    .then((res) => res.data);
 };
 
 export const getTodo = (id: number) => {
@@ -36,13 +40,13 @@ export const getTodo = (id: number) => {
 export const getRandomTodo = (params?: RandomTodoParams) => {
   return axios
     .get(`${BASE_URL}/todos/random${params ? `?length=${params.length}` : ''}`)
-    .then((res) => res);
+    .then((res) => res.data);
 };
 
 export const getAllTodosByUserId = (params: AllTodosByUserIdParams) => {
   return axios
     .get(`${BASE_URL}/todos/user/${params.userId}`)
-    .then((res) => res);
+    .then((res) => res.data);
 };
 
 // Mutations
@@ -55,7 +59,7 @@ export const updateTodo = (params: UpdateTodoParams) => {
     .put(`${BASE_URL}/todos/${params.userId}`, {
       completed: params.completed,
     })
-    .then((res) => res);
+    .then((res) => res.data);
 };
 
 export const deleteTodo = (params: DeleteTodoParams) => {
