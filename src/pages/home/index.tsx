@@ -2,9 +2,21 @@ import { useGetAllTodosQuery } from '@/entities/todo/api/use-get-all-todos.query
 import { Button } from '@/shared/ui/button/Button';
 import { format } from 'date-fns';
 import { TodoList } from '@/entities/todo/components/TodoList';
+import { useState, useEffect } from 'react';
+import { TodoDto } from '@/shared/api/todo';
 
 export const Home = () => {
-  const { data: todosDto, isLoading } = useGetAllTodosQuery();
+  const [queryParams, setQueryParams] = useState({ limit: 15, skip: 0 });
+  const [todos, setTodos] = useState<TodoDto[]>([]);
+  const {
+    data: todosDto,
+    isLoading,
+  } = useGetAllTodosQuery(queryParams);
+
+  useEffect(() => {
+    if(todosDto)
+      setTodos(previousTodos => [...previousTodos, ...todosDto.todos]);
+  }, [todosDto]);
 
   return (
     <div className="flex flex-col items-center gap-8 w-full">
@@ -23,9 +35,20 @@ export const Home = () => {
         {isLoading ? (
           <span>Loading...</span>
         ) : (
-          <TodoList todos={todosDto?.todos ?? []} />
+          <TodoList todos={todos} />
         )}
       </div>
+      <Button
+        variant="primary"
+        onClick={() =>
+          setQueryParams({
+            limit: queryParams.limit,
+            skip: queryParams.skip + 15,
+          })
+        }
+      >
+        Load more tasks
+      </Button>
     </div>
   );
 };
