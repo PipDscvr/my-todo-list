@@ -1,14 +1,27 @@
-import type { TodoDto } from '@/shared/api/todo';
 import classNames from 'classnames';
+import { Button } from '@/shared/ui/button/Button';
+import type { TodoDto } from '@/shared/api/todo';
 
-export const TodoListItem = ({ item }: { item: TodoDto }) => {
+export const TodoListItem = ({ item, onMarkAsCompleted, onDelete }: { item: TodoDto, onMarkAsCompleted: (id: number) => void, onDelete: (id: number) => void }) => {
   return (
-    <div className="flex justify-between bg-white rounded-xl p-4">
-      <div className="flex gap-4 items-center">
-        <span>{item.id}</span>
-        <span className={classNames('text-md', { 'line-through': item.completed})}>{item.todo}</span>
+    <div className="flex items-center bg-white rounded-xl p-4 gap-5">
+      <div className="flex gap-4 items-center flex-1">
+        <span
+          className={classNames('text-md', { 'line-through': item.completed })}
+        >
+          {item.todo}
+        </span>
       </div>
-      { item.completed && <span className="text-sm text-gray-500">Completed</span> }
+      <div className="flex flex-col gap-2">
+        {!item.completed && (
+          <Button variant="success" size="x-small" onClick={() => onMarkAsCompleted(item.id)}>
+            Mark as completed
+          </Button>
+        )}
+        {item.completed && (
+          <Button variant="primary" size="x-small" onClick={() => onDelete(item.id)}>Delete</Button>
+        )}
+      </div>
     </div>
   );
 };

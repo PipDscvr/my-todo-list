@@ -1,6 +1,6 @@
 @import 'tailwindcss';
 
-#root {
+html {
   @apply bg-gray-100
 }
 @layer components {
@@ -9,5 +9,11 @@
   }
   .disabled {
     @apply bg-gray-100/50 text-gray-500 cursor-not-allowed;
+  }
+  .success {
+    @apply bg-green-100/50 text-gray-500 hover:bg-green-500 hover:text-white;
+  }
+  .destructive {
+    @apply bg-red-100/50 text-white hover:bg-red-500;
   }
 }
