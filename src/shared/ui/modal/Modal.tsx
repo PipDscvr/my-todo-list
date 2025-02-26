@@ -17,7 +17,7 @@ export const Modal = ({
       <div className="flex flex-col gap-4 w-full max-w-[500px] bg-white relative border border-gray-500/50 rounded-xl p-4">
         <Button
           variant="custom"
-          customStyle="text-base absolute top-3 right-3"
+          customStyle="text-base absolute top-3 right-3 cursor-pointer"
           onClick={() => onClose()}
         >
           close

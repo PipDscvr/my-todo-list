@@ -18,7 +18,7 @@ export const Home = () => {
   const { mutate: updateTodoMutation } = useUpdateTodoMutation();
   const { mutate: addTodoMutation } = useAddTodoMutation();
   const { mutate: deleteTodoMutation } = useDeleteTodoMutation();
-  const { data: todosDto } = useGetAllTodosQuery(queryParams);
+  const { data: todosDto, isLoading } = useGetAllTodosQuery(queryParams);
 
   const onAddTodo = (content: string) => {
     addTodoMutation(
@@ -28,7 +28,6 @@ export const Home = () => {
       },
       {
         onSuccess: (data) => {
-          console.log(data);
           setTodos((previous) => [data.data, ...previous]);
           setShowModal(false);
         },
@@ -96,7 +95,7 @@ export const Home = () => {
           + New Task
         </Button>
       </div>
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-4 w-full">
         <div className="flex flex-col gap-8">
           {todos.map((todo) => (
             <TodoListItem
@@ -123,7 +122,7 @@ export const Home = () => {
           Load more tasks
         </Button>
       )}
-      {todos.length === 0 && (
+      {todos.length === 0 && !isLoading && (
         <div className="flex items-center justify-center p-4 bg-white rounded-xl w-full">
           <span className="text-lg">No todos yet, please add a todo</span>
         </div>
