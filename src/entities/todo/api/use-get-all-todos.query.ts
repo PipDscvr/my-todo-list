@@ -4,7 +4,7 @@ import { getAllTodos, TodoParams } from '@/shared/api/todo';
 
 export const useGetAllTodosQuery = (params?: TodoParams) => {
   return useQuery({
-    queryKey: [todosKey],
+    queryKey: [todosKey, params],
     queryFn: () => getAllTodos(params),
   });
 };
