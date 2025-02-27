@@ -78,55 +78,57 @@ export const Home = () => {
   }, [todosDto]);
 
   return (
-    <div className="flex flex-col items-center gap-8 w-full">
-      <div className="flex max-w-2xl w-full justify-between items-center">
-        <div className="flex flex-col gap-2">
-          <h1 className="text-4xl">My Todo List</h1>
-          <span className="text-gray-300">
-            {format(new Date(), 'EEEE, wo LLLL')}
-          </span>
+    <div className="relative h-full py-10 w-full max-w-[500px] mx-auto">
+      <div className="flex flex-col items-center gap-8 w-full">
+        <div className="flex max-w-2xl w-full justify-between items-center">
+          <div className="flex flex-col gap-2">
+            <h1 className="text-4xl">My Todo List</h1>
+            <span className="text-gray-300">
+              {format(new Date(), 'EEEE, wo LLLL')}
+            </span>
+          </div>
+          <Button variant="primary" onClick={() => setShouldShowModal(true)}>
+            + New Task
+          </Button>
         </div>
-        <Button variant="primary" onClick={() => setShouldShowModal(true)}>
-          + New Task
-        </Button>
+        <div className="flex flex-col gap-4 w-full">
+          <div className="flex flex-col gap-8">
+            {todos.map((todo) => (
+              <TodoListItem
+                key={todo.id}
+                item={todo}
+                onMarkAsCompleted={handleMarkAsCompleted}
+                onDelete={handleDelete}
+              />
+            ))}
+          </div>
+        </div>
+        {todos.length > 15 && queryParams.skip < todos.length && (
+          <Button
+            variant="primary"
+            onClick={() => {
+              if (totalPages && queryParams.skip <= totalPages) {
+                setQueryParams({
+                  limit: queryParams.limit,
+                  skip: queryParams.skip + 15,
+                });
+              }
+            }}
+          >
+            Load more tasks
+          </Button>
+        )}
+        {todos.length === 0 && !isLoading && (
+          <div className="flex items-center justify-center p-4 bg-white rounded-xl w-full">
+            <span className="text-lg">No todos yet, please add a todo</span>
+          </div>
+        )}
+        {shouldShowModal && (
+          <Modal title="Add new task" onClose={() => setShouldShowModal(false)}>
+            <NewTodoForm onSubmit={onAddTodo} />
+          </Modal>
+        )}
       </div>
-      <div className="flex flex-col gap-4 w-full">
-        <div className="flex flex-col gap-8">
-          {todos.map((todo) => (
-            <TodoListItem
-              key={todo.id}
-              item={todo}
-              onMarkAsCompleted={handleMarkAsCompleted}
-              onDelete={handleDelete}
-            />
-          ))}
-        </div>
-      </div>
-      {todos.length > 15 && queryParams.skip < todos.length && (
-        <Button
-          variant="primary"
-          onClick={() => {
-            if (totalPages && queryParams.skip <= totalPages) {
-              setQueryParams({
-                limit: queryParams.limit,
-                skip: queryParams.skip + 15,
-              });
-            }
-          }}
-        >
-          Load more tasks
-        </Button>
-      )}
-      {todos.length === 0 && !isLoading && (
-        <div className="flex items-center justify-center p-4 bg-white rounded-xl w-full">
-          <span className="text-lg">No todos yet, please add a todo</span>
-        </div>
-      )}
-      {shouldShowModal && (
-        <Modal title="Add new task" onClose={() => setShouldShowModal(false)}>
-          <NewTodoForm onSubmit={onAddTodo} />
-        </Modal>
-      )}
     </div>
   );
 };
