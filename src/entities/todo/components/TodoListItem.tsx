@@ -13,12 +13,11 @@ export const TodoListItem = ({ item, onMarkAsCompleted, onDelete }: { item: Todo
         </span>
       </div>
       <div className="flex flex-col gap-2">
-        {!item.completed && (
+        {!item.completed ? (
           <Button variant="success" size="x-small" onClick={() => onMarkAsCompleted(item.id)}>
             Mark as completed
           </Button>
-        )}
-        {item.completed && (
+        ) : (
           <Button variant="primary" size="x-small" onClick={() => onDelete(item.id)}>Delete</Button>
         )}
       </div>

@@ -1,11 +1,13 @@
 import { useState } from "react";
-import { Button } from "@/shared/ui/button/Button";
 
 export const NewTodoForm = ({onSubmit}: {onSubmit: (content: string) => void}) => {
   const [content, setContent] = useState('');
 
   return (
-    <div className="flex flex-col gap-3">
+    <form onSubmit={(e) => {
+      e.preventDefault();
+      onSubmit(content)
+    }} className="flex flex-col gap-3">
       <input
         type="text"
         name="content"
@@ -14,9 +16,9 @@ export const NewTodoForm = ({onSubmit}: {onSubmit: (content: string) => void}) =
         className="border border-gray-500/50 p-4 rounded-xl"
         onChange={ (e) => setContent(e.target.value)}
       />
-      <Button variant="primary" onClick={() => onSubmit(content)}>
+      <button type="submit" className="flex gap-2 items-center justify-center p-2.5 rounded-lg cursor-pointer primary">
         Add
-      </Button>
-    </div>
+      </button>
+    </form>
   );
 };

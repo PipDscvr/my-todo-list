@@ -14,7 +14,7 @@ export const Home = () => {
   const [queryParams, setQueryParams] = useState({ limit: 15, skip: 0 });
   const [todos, setTodos] = useState<TodoDto[]>([]);
   const [totalPages, setTotalPages] = useState<number | undefined>();
-  const [showModal, setShowModal] = useState(false);
+  const [shouldShowModal, setShouldShowModal] = useState(false);
   const { mutate: updateTodoMutation } = useUpdateTodoMutation();
   const { mutate: addTodoMutation } = useAddTodoMutation();
   const { mutate: deleteTodoMutation } = useDeleteTodoMutation();
@@ -29,7 +29,7 @@ export const Home = () => {
       {
         onSuccess: (data) => {
           setTodos((previous) => [data.data, ...previous]);
-          setShowModal(false);
+          setShouldShowModal(false);
         },
       },
     );
@@ -42,12 +42,7 @@ export const Home = () => {
       },
       {
         onSuccess: () => {
-          const newTodos = [...todos];
-          const index = newTodos.findIndex((t) => t.id === id);
-          if (index !== -1) {
-            newTodos.splice(index, 1);
-            setTodos(newTodos);
-          }
+          setTodos(todos.filter((t) => t.id !== id));
         },
         onError: (error) => {
           throw new Error(error.message);
@@ -91,7 +86,7 @@ export const Home = () => {
             {format(new Date(), 'EEEE, wo LLLL')}
           </span>
         </div>
-        <Button variant="primary" onClick={() => setShowModal(true)}>
+        <Button variant="primary" onClick={() => setShouldShowModal(true)}>
           + New Task
         </Button>
       </div>
@@ -110,14 +105,14 @@ export const Home = () => {
       {todos.length > 15 && queryParams.skip < todos.length && (
         <Button
           variant="primary"
-          onClick={() =>
-            totalPages &&
-            queryParams.skip <= totalPages &&
-            setQueryParams({
-              limit: queryParams.limit,
-              skip: queryParams.skip + 15,
-            })
-          }
+          onClick={() => {
+            if (totalPages && queryParams.skip <= totalPages) {
+              setQueryParams({
+                limit: queryParams.limit,
+                skip: queryParams.skip + 15,
+              });
+            }
+          }}
         >
           Load more tasks
         </Button>
@@ -127,8 +122,8 @@ export const Home = () => {
           <span className="text-lg">No todos yet, please add a todo</span>
         </div>
       )}
-      {showModal && (
-        <Modal title="Add new task" onClose={() => setShowModal(false)}>
+      {shouldShowModal && (
+        <Modal title="Add new task" onClose={() => setShouldShowModal(false)}>
           <NewTodoForm onSubmit={onAddTodo} />
         </Modal>
       )}
